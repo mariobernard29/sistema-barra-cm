@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producción CocoMar</title>
+    <link rel="icon" href="img/ICONO.svg" type="image/svg+xml">
+    <!-- Tailwind CSS para el diseño -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Animaciones suaves */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hidden-section {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-800 min-h-screen p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto mb-4">
+    <a href="index.html" class="inline-flex items-center text-gray-500 hover:text-blue-600 font-medium transition-colors">
+        <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i>
+        Volver al Menú
+    </a>
+</div>
+
+
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
+
+        <!-- Header con Logo -->
+        <div class="bg-white p-6 border-b border-gray-100 text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+
+            <div class="flex flex-col items-center justify-center gap-4">
+                <!-- LOGO: Cambia el src por tu imagen real si la tienes local o en internet -->
+                <div class="w-32">
+                    <img src="./img/logo.svg" alt="Logo CocoMar" class="w-full h-full object-cover">
+                </div>
+
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 tracking-tight">CocoMar</h1>
+                    <p class="text-blue-600 font-medium opacity-90 tracking-wide uppercase text-sm mt-1">Control de
+                        Producción & Barra</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-6">
+
+            <!-- VISTA DE ENTRADA (INPUTS) -->
+            <div id="input-section" class="fade-in">
+                <!-- Selector de Día -->
+                <div class="mb-8 text-center">
+                    <label class="block text-gray-400 text-xs font-bold uppercase tracking-widest mb-2">Selecciona el
+                        día</label>
+                    <div class="relative inline-block w-full max-w-xs group">
+                        <select id="day-selector"
+                            class="block appearance-none w-full bg-white border-2 border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded-xl leading-tight focus:outline-none focus:bg-white focus:border-blue-500 font-bold capitalize shadow-sm text-lg transition-all hover:border-blue-300">
+                            <option value="lunes">Lunes</option>
+                            <option value="martes">Martes</option>
+                            <option value="miercoles">Miércoles</option>
+                            <option value="jueves">Jueves</option>
+                            <option value="viernes">Viernes</option>
+                            <option value="sabado">Sábado</option>
+                            <option value="domingo">Domingo</option>
+                        </select>
+                        <div
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-blue-500"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instrucciones -->
+                <div
+                    class="flex items-center gap-3 mb-6 bg-blue-50 p-4 rounded-xl border border-blue-100 text-blue-800 text-sm shadow-sm">
+                    <i data-lucide="alert-circle" class="w-6 h-6 text-blue-600 flex-shrink-0"></i>
+                    <span><strong>Instrucciones:</strong> Revisa tu refrigerador y barra. Ingresa la cantidad que <u>YA
+                            TIENES LISTA</u>.</span>
+                </div>
+
+                <!-- Grid de Inputs (Se genera con JS) -->
+                <div id="inventory-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <!-- Aquí se inyectan los campos -->
+                </div>
+
+                <button onclick="calculateProduction()"
+                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform transition hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-3 text-lg cursor-pointer">
+                    <i data-lucide="calculator" class="w-6 h-6"></i>
+                    Calcular Producción del Día
+                </button>
+            </div>
+
+            <!-- VISTA DE REPORTE (RESULTADOS) -->
+            <div id="report-section" class="hidden-section fade-in space-y-8">
+
+                <!-- 1. Plan de Cocina -->
+                <div class="bg-white rounded-xl overflow-hidden border border-indigo-100 shadow-lg">
+                    <div class="bg-indigo-600 p-4 flex justify-between items-center text-white">
+                        <h2 class="text-xl font-bold flex items-center gap-2">
+                            <i data-lucide="chef-hat" class="w-6 h-6"></i>
+                            Plan de Cocina
+                        </h2>
+                        <span id="report-day-badge"
+                            class="bg-white/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">DÍA</span>
+                    </div>
+
+                    <div id="kitchen-plan-list" class="divide-y divide-gray-100">
+                        <!-- Aquí se inyecta la lista de qué cocinar -->
+                    </div>
+
+                    <!-- Mensaje si no hay nada que hacer -->
+                    <div id="empty-state"
+                        class="hidden-section p-12 text-center text-gray-500 flex flex-col items-center">
+                        <div
+                            class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-600">
+                            <i data-lucide="clipboard-list" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-700">¡Todo en orden!</h3>
+                        <p class="text-gray-500 mt-2">No se requiere producción adicional por hoy.</p>
+                    </div>
+                </div>
+
+                <!-- 2. Breakdown Jarabe -->
+                <div id="jarabe-section"
+                    class="hidden-section bg-amber-50 rounded-xl p-5 border border-amber-200 text-sm text-amber-900 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <i data-lucide="droplets" class="w-24 h-24 text-amber-900"></i>
+                    </div>
+                    <div class="relative z-10 flex items-start gap-4">
+                        <div class="p-3 bg-amber-100 rounded-full text-amber-600">
+                            <i data-lucide="droplets" class="w-6 h-6"></i>
+                        </div>
+                        <div class="w-full">
+                            <h4 class="font-bold text-amber-800 text-lg">Resumen de Jarabe Natural</h4>
+                            <p class="mt-1 text-amber-800 opacity-80 max-w-lg">
+                                Total real necesario (Mezclas + Barra):
+                            </p>
+                            <div class="mt-4 grid grid-cols-3 gap-2 sm:gap-4">
+                                <div
+                                    class="bg-white px-4 py-3 rounded-lg border border-amber-100 shadow-sm text-center">
+                                    <span
+                                        class="block text-xs text-amber-400 font-bold uppercase tracking-wider mb-1">Total</span>
+                                    <span id="jarabe-total" class="text-2xl font-bold text-amber-700">0 L</span>
+                                </div>
+                                <div
+                                    class="bg-white/60 px-3 py-2 rounded-lg border border-amber-100 text-center flex flex-col justify-center">
+                                    <span class="block text-xs opacity-60 mb-1">Barra</span>
+                                    <span id="jarabe-barra" class="font-bold text-amber-800">0 L</span>
+                                </div>
+                                <div
+                                    class="bg-white/60 px-3 py-2 rounded-lg border border-amber-100 text-center flex flex-col justify-center">
+                                    <span class="block text-xs opacity-60 mb-1">Mezclas</span>
+                                    <span id="jarabe-mix" class="font-bold text-amber-800">0 L</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Lista de Compras Total -->
+                <div id="materials-section"
+                    class="hidden-section bg-white rounded-xl overflow-hidden border border-emerald-100 shadow-lg">
+                    <div class="bg-emerald-600 p-4 flex justify-between items-center text-white">
+                        <h2 class="text-xl font-bold flex items-center gap-2">
+                            <i data-lucide="clipboard-list" class="w-6 h-6"></i>
+                            Lista de Almacén (Total)
+                        </h2>
+                        <span
+                            class="bg-white/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Compras</span>
+                    </div>
+                    <div class="p-6">
+                        <p
+                            class="text-sm text-emerald-800 mb-4 bg-emerald-50 p-3 rounded-lg border border-emerald-100 inline-block">
+                            Suma total de ingredientes a retirar de bodega.
+                        </p>
+                        <div id="materials-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <!-- Inyección JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="resetApp()"
+                    class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 font-bold py-4 px-6 rounded-xl transition flex items-center justify-center gap-2 mt-4 cursor-pointer">
+                    <i data-lucide="chevron-up" class="w-5 h-5"></i>
+                    Volver al inicio / Recalcular
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="text-center mt-8 text-gray-400 text-xs uppercase tracking-widest">
+        <p>Sistema de Producción © Cocomar Bar 2025</p>
+    </div>
+
+    <!-- LÓGICA DE LA APLICACIÓN -->
+    <script>
+        // --- DATOS ---
+        const PAR_STOCK = {
+            lunes: { "Jugo de limón": 3, "Sour Mix": 6, "Jarabe natural": 3, "Concentrado de fresa": 3, "Concentrado de frutos rojos": 3, "Concentrado de horchata": 3, "Concentrado de michelada": 2, "Concentrado de mango": 1, "Concentrado de pepino": 1, "Brochetas de frutos rojos": 25 },
+            martes: { "Jugo de limón": 3, "Sour Mix": 6, "Jarabe natural": 3, "Concentrado de fresa": 3, "Concentrado de frutos rojos": 3, "Concentrado de horchata": 3, "Concentrado de michelada": 2, "Concentrado de mango": 1, "Concentrado de pepino": 1, "Brochetas de frutos rojos": 25 },
+            miercoles: { "Jugo de limón": 3, "Sour Mix": 6, "Jarabe natural": 3, "Concentrado de fresa": 3, "Concentrado de frutos rojos": 3, "Concentrado de horchata": 3, "Concentrado de michelada": 2, "Concentrado de mango": 1, "Concentrado de pepino": 1, "Brochetas de frutos rojos": 25 },
+            jueves: { "Jugo de limón": 3, "Sour Mix": 6, "Jarabe natural": 3, "Concentrado de fresa": 3, "Concentrado de frutos rojos": 3, "Concentrado de horchata": 3, "Concentrado de michelada": 2, "Concentrado de mango": 1, "Concentrado de pepino": 1, "Brochetas de frutos rojos": 25 },
+            viernes: { "Jugo de limón": 3, "Sour Mix": 6, "Jarabe natural": 5, "Concentrado de fresa": 3, "Concentrado de frutos rojos": 3, "Concentrado de horchata": 3, "Concentrado de michelada": 2, "Concentrado de mango": 1, "Concentrado de pepino": 1, "Brochetas de frutos rojos": 25 },
+            sabado: { "Jugo de limón": 3, "Sour Mix": 6, "Jarabe natural": 3, "Concentrado de fresa": 3, "Concentrado de frutos rojos": 3, "Concentrado de horchata": 3, "Concentrado de michelada": 2, "Concentrado de mango": 1, "Concentrado de pepino": 1, "Brochetas de frutos rojos": 25 },
+            domingo: { "Jugo de limón": 3, "Sour Mix": 6, "Jarabe natural": 3, "Concentrado de fresa": 3, "Concentrado de frutos rojos": 3, "Concentrado de horchata": 3, "Concentrado de michelada": 3, "Concentrado de mango": 1, "Concentrado de pepino": 1, "Brochetas de frutos rojos": 25 }
+        };
+
+        const RECIPES = {
+            "Jarabe natural": { yield: 1.3, ingredients: [{ name: "Azúcar morena", qty: 1, unit: "Lt (vol)" }, { name: "Agua natural", qty: 750, unit: "ml" }] },
+            "Sour Mix": { yield: 1.6, ingredients: [{ name: "Jugo de limón", qty: 600, unit: "ml" }, { name: "Jarabe natural", qty: 1, unit: "Lt" }] },
+            "Concentrado de fresa": { yield: 1.2, ingredients: [{ name: "Fresa congelada", qty: 1, unit: "Kg" }, { name: "Granadina", qty: 200, unit: "ml" }] },
+            "Concentrado de frutos rojos": { yield: 1.4, ingredients: [{ name: "Fresa natural", qty: 700, unit: "gr" }, { name: "Frambuesa", qty: 500, unit: "gr" }, { name: "Granadina", qty: 250, unit: "ml" }] },
+            "Concentrado de pepino": { yield: 1.8, ingredients: [{ name: "Pepino", qty: 2, unit: "Kg" }, { name: "Jarabe natural", qty: 150, unit: "ml" }, { name: "Agua natural", qty: 500, unit: "ml" }] },
+            "Concentrado de mango": { yield: 1.25, ingredients: [{ name: "Mango congelado", qty: 1, unit: "Kg" }, { name: "Jarabe natural", qty: 250, unit: "ml" }] },
+            "Concentrado de michelada": { yield: 0.95, ingredients: [{ name: "Clamato", qty: 850, unit: "ml" }, { name: "Salsa inglesa", qty: 20, unit: "ml" }, { name: "Jugo Maggi", qty: 20, unit: "ml" }, { name: "Salsa Huichol", qty: 20, unit: "ml" }, { name: "Sal", qty: 0.5, unit: "cdita" }, { name: "Pimienta", qty: 0.5, unit: "cdita" }] },
+            "Jugo de limón": { yield: 1, ingredients: [{ name: "Limón (Materia Prima)", qty: 1, unit: "Lt (exprimido)" }] },
+            "Concentrado de horchata": { yield: 1, ingredients: [{ name: "Base Horchata/Arroz", qty: 1, unit: "Lt" }] },
+            "Brochetas de frutos rojos": { yield: 1, ingredients: [{ name: "Frutos rojos mix", qty: 1, unit: "proporción pieza" }] }
+        };
+
+        // --- FUNCIONES ---
+
+        function init() {
+            lucide.createIcons();
+            renderInputs();
+            document.getElementById('day-selector').addEventListener('change', renderInputs);
+        }
+
+        function formatNum(num) {
+            if (num < 0.1) return num.toFixed(3);
+            if (num % 1 !== 0) return num.toFixed(2);
+            return num;
+        }
+
+        function renderInputs() {
+            const day = document.getElementById('day-selector').value;
+            const container = document.getElementById('inventory-grid');
+            container.innerHTML = ''; // Limpiar
+
+            const items = PAR_STOCK[day];
+
+            Object.keys(items).forEach(item => {
+                const target = items[item];
+                const unit = item.includes("Brocheta") ? "pz" : "Lt";
+
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl hover:shadow-md transition-shadow hover:border-blue-300 group";
+                div.innerHTML = `
+                    <div class="flex-1">
+                        <h3 class="font-bold text-gray-700 group-hover:text-blue-700 transition-colors">${item}</h3>
+                        <span class="text-xs text-gray-400 font-medium bg-gray-100 px-2 py-0.5 rounded-full inline-block mt-1">
+                            Meta: ${target} ${unit}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="number" step="0.5" min="0" placeholder="0" data-item="${item}"
+                            class="inventory-input w-24 p-3 text-right border-2 border-gray-100 bg-gray-50 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none font-mono text-lg transition-all">
+                        <span class="text-gray-400 text-sm w-6 font-medium">${unit}</span>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function calculateProduction() {
+            const day = document.getElementById('day-selector').value;
+            const inputs = document.querySelectorAll('.inventory-input');
+            const targets = PAR_STOCK[day];
+
+            const plan = [];
+            let totalJarabeNeededForMixesLiters = 0;
+            const materialsMap = {};
+
+            // 1. Calcular faltantes
+            inputs.forEach(input => {
+                const item = input.dataset.item;
+                const current = parseFloat(input.value) || 0;
+                const target = targets[item];
+                const need = Math.max(0, target - current);
+
+                if (need > 0) {
+                    const itemPlan = {
+                        item, need,
+                        unit: item.includes("Brocheta") ? "pzas" : "Lt",
+                        ingredientsNeeded: []
+                    };
+
+                    if (RECIPES[item]) {
+                        const recipe = RECIPES[item];
+                        const batchesNeeded = need / recipe.yield;
+
+                        recipe.ingredients.forEach(ing => {
+                            const totalQty = ing.qty * batchesNeeded;
+
+                            itemPlan.ingredientsNeeded.push({
+                                name: ing.name, qty: totalQty, unit: ing.unit
+                            });
+
+                            if (ing.name === "Jarabe natural") {
+                                let qtyInLiters = totalQty;
+                                if (ing.unit === "ml") qtyInLiters = totalQty / 1000;
+                                totalJarabeNeededForMixesLiters += qtyInLiters;
+                            } else {
+                                if (!materialsMap[ing.name]) materialsMap[ing.name] = { qty: 0, unit: ing.unit };
+                                materialsMap[ing.name].qty += totalQty;
+                            }
+                        });
+                    }
+                    plan.push(itemPlan);
+                }
+            });
+
+            // 2. Lógica Jarabe
+            const jarabeDirecto = plan.find(p => p.item === "Jarabe natural");
+            let totalJarabeLiters = totalJarabeNeededForMixesLiters;
+            if (jarabeDirecto) totalJarabeLiters += jarabeDirecto.need;
+
+            if (totalJarabeLiters > 0) {
+                const jarabeRecipe = RECIPES["Jarabe natural"];
+                const batchesJarabe = totalJarabeLiters / jarabeRecipe.yield;
+                jarabeRecipe.ingredients.forEach(ing => {
+                    if (!materialsMap[ing.name]) materialsMap[ing.name] = { qty: 0, unit: ing.unit };
+                    materialsMap[ing.name].qty += ing.qty * batchesJarabe;
+                });
+            }
+
+            // Renderizar Resultados
+            document.getElementById('input-section').classList.add('hidden-section');
+            document.getElementById('report-section').classList.remove('hidden-section');
+            document.getElementById('report-day-badge').innerText = day.toUpperCase();
+
+            // Render Plan
+            const planContainer = document.getElementById('kitchen-plan-list');
+            planContainer.innerHTML = '';
+            const emptyState = document.getElementById('empty-state');
+
+            if (plan.length === 0) {
+                emptyState.classList.remove('hidden-section');
+            } else {
+                emptyState.classList.add('hidden-section');
+                plan.forEach(row => {
+                    let ingredientsHtml = '';
+                    if (row.ingredientsNeeded && row.ingredientsNeeded.length > 0) {
+                        ingredientsHtml = `
+                            <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 ml-0 sm:ml-4 mt-2">
+                                <p class="text-xs font-bold text-gray-400 mb-2 uppercase flex items-center gap-1 tracking-wider">
+                                    <i data-lucide="utensils" class="w-3 h-3"></i> Mezclar:
+                                </p>
+                                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+                                    ${row.ingredientsNeeded.map(ing => `
+                                        <li class="text-sm text-gray-600 flex justify-between border-b border-gray-200 border-dashed pb-1 last:border-0">
+                                            <span>${ing.name}</span>
+                                            <span class="font-bold text-gray-800">${formatNum(ing.qty)} ${ing.unit}</span>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>`;
+                    } else {
+                        ingredientsHtml = `<div class="ml-4 mt-2"><span class="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded">Sin sub-receta</span></div>`;
+                    }
+
+                    const div = document.createElement('div');
+                    div.className = "p-5 hover:bg-gray-50 transition-colors";
+                    div.innerHTML = `
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-lg font-bold text-indigo-900">${row.item}</h3>
+                            <div class="text-right bg-indigo-50 px-4 py-2 rounded-lg border border-indigo-100">
+                                <span class="text-xs text-indigo-400 uppercase font-bold mr-2 tracking-wide">Producir</span>
+                                <span class="text-2xl font-bold text-indigo-700">${formatNum(row.need)} <span class="text-sm text-indigo-400 font-normal">${row.unit}</span></span>
+                            </div>
+                        </div>
+                        ${ingredientsHtml}
+                    `;
+                    planContainer.appendChild(div);
+                });
+            }
+
+            // Render Jarabe Info
+            const jarabeSection = document.getElementById('jarabe-section');
+            if (totalJarabeLiters > 0) {
+                jarabeSection.classList.remove('hidden-section');
+                document.getElementById('jarabe-total').innerText = formatNum(totalJarabeLiters) + " L";
+                document.getElementById('jarabe-barra').innerText = formatNum(jarabeDirecto ? jarabeDirecto.need : 0) + " L";
+                document.getElementById('jarabe-mix').innerText = formatNum(totalJarabeNeededForMixesLiters) + " L";
+            } else {
+                jarabeSection.classList.add('hidden-section');
+            }
+
+            // Render Materials List
+            const materialsContainer = document.getElementById('materials-list');
+            materialsContainer.innerHTML = '';
+            const matSection = document.getElementById('materials-section');
+
+            const matKeys = Object.keys(materialsMap);
+            if (matKeys.length > 0) {
+                matSection.classList.remove('hidden-section');
+                matKeys.forEach(key => {
+                    const mat = materialsMap[key];
+                    const div = document.createElement('div');
+                    div.className = "flex justify-between items-center p-3 bg-white hover:bg-gray-50 rounded-lg border border-gray-200 shadow-sm transition-all group";
+                    div.innerHTML = `
+                        <span class="font-medium text-gray-700 capitalize group-hover:text-emerald-700 transition-colors">${key}</span>
+                        <span class="font-bold text-emerald-600 text-lg">
+                            ${formatNum(mat.qty)} <span class="text-xs font-normal text-gray-400 uppercase">${mat.unit}</span>
+                        </span>
+                    `;
+                    materialsContainer.appendChild(div);
+                });
+            } else {
+                matSection.classList.add('hidden-section');
+            }
+
+            // Refresh Icons
+            lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetApp() {
+            document.getElementById('report-section').classList.add('hidden-section');
+            document.getElementById('input-section').classList.remove('hidden-section');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Iniciar
+        init();
+    </script>
+</body>
+
+</html>

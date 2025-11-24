@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Receta</title>
+    <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 min-h-screen p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-3xl overflow-hidden border border-gray-100" id="recipe-detail-container">
+        
+        <div class="relative h-64 md:h-80 bg-gray-200">
+            <img id="recipe-image" src="" alt="" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            
+            <a id="back-link" href="#" class="absolute top-6 left-6 bg-white/20 backdrop-blur-md text-white p-2 rounded-full hover:bg-white hover:text-orange-500 transition-all">
+                <i data-lucide="arrow-left" class="w-6 h-6"></i>
+            </a>
+
+            <div class="absolute bottom-6 left-6 right-6">
+                <h1 id="recipe-name" class="text-3xl md:text-5xl font-bold text-white drop-shadow-md"></h1>
+            </div>
+        </div>
+
+        <div class="p-6 md:p-10 grid md:grid-cols-2 gap-10">
+            
+            <div>
+                <div class="flex items-center gap-2 mb-4 text-orange-600">
+                    <i data-lucide="citrus" class="w-6 h-6"></i>
+                    <h2 class="text-xl font-bold uppercase tracking-wide">Ingredientes</h2>
+                </div>
+                <div id="ingredients-list" class="space-y-3">
+                    </div>
+            </div>
+
+            <div>
+                <div class="flex items-center gap-2 mb-4 text-orange-600">
+                    <i data-lucide="clipboard-list" class="w-6 h-6"></i>
+                    <h2 class="text-xl font-bold uppercase tracking-wide">Preparación</h2>
+                </div>
+                <ol id="method-list" class="space-y-6 relative border-l-2 border-orange-100 ml-3 pl-6 py-2">
+                    </ol>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/recetario.js"></script>
+</body>
+</html>

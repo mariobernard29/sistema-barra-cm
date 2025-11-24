@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Recetas</title>
+    <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 min-h-screen p-4 md:p-8">
+    <div class="max-w-5xl mx-auto">
+        
+        <div class="flex items-center gap-4 mb-8">
+            <a href="recetario-menu.html" class="bg-white p-2 rounded-lg border border-gray-200 hover:text-orange-500 transition-colors">
+                <i data-lucide="arrow-left" class="w-6 h-6"></i>
+            </a>
+            <div>
+                <span class="text-xs font-bold text-orange-500 uppercase tracking-widest">Categoría</span>
+                <h1 id="category-title" class="text-3xl font-bold text-gray-800">Cargando...</h1>
+            </div>
+        </div>
+
+        <div id="recipe-list-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+    </div>
+    <script src="js/recetario.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recetario - Categorías</title>
+    <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 min-h-screen p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <div class="flex items-center gap-4 mb-8">
+            <a href="index.html" class="bg-white p-2 rounded-lg border border-gray-200 hover:text-orange-500 hover:border-orange-200 transition-colors">
+                <i data-lucide="arrow-left" class="w-6 h-6"></i>
+            </a>
+            <h1 class="text-2xl font-bold text-gray-800">Categorías de Barra</h1>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <a href="recetario-lista.html?categoria=bebidas-sin-alcohol" class="group bg-white rounded-2xl p-8 shadow-lg border-b-4 border-emerald-400 hover:translate-y-1 hover:shadow-md transition-all text-center">
+                <div class="bg-emerald-50 w-20 h-20 mx-auto rounded-full flex items-center justify-center text-emerald-500 mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="glass-water" class="w-10 h-10"></i>
+                </div>
+                <h3 class="font-bold text-xl text-gray-800 mb-2">Sin Alcohol</h3>
+                <p class="text-sm text-gray-400">Limonadas, Naranjadas y Mocktails</p>
+            </a>
+
+            <a href="recetario-lista.html?categoria=mixologia" class="group bg-white rounded-2xl p-8 shadow-lg border-b-4 border-indigo-400 hover:translate-y-1 hover:shadow-md transition-all text-center">
+                <div class="bg-indigo-50 w-20 h-20 mx-auto rounded-full flex items-center justify-center text-indigo-500 mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="flask-conical" class="w-10 h-10"></i>
+                </div>
+                <h3 class="font-bold text-xl text-gray-800 mb-2">Mixología</h3>
+                <p class="text-sm text-gray-400">Creaciones especiales de la casa</p>
+            </a>
+
+            <a href="recetario-lista.html?categoria=cocteleria" class="group bg-white rounded-2xl p-8 shadow-lg border-b-4 border-orange-400 hover:translate-y-1 hover:shadow-md transition-all text-center">
+                <div class="bg-orange-50 w-20 h-20 mx-auto rounded-full flex items-center justify-center text-orange-500 mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="martini" class="w-10 h-10"></i>
+                </div>
+                <h3 class="font-bold text-xl text-gray-800 mb-2">Coctelería</h3>
+                <p class="text-sm text-gray-400">Clásicos y favoritos</p>
+            </a>
+
+        </div>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
