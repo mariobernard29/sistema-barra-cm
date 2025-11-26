@@ -4,74 +4,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Producción CocoMar</title>
-    <link rel="icon" href="img/ICONO.svg" type="image/svg+xml">
-    <!-- Tailwind CSS para el diseño -->
+    <title>Calculadora CocoMar</title>
+    <link rel="icon" href="img/logo.svg" type="image/svg+xml">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Iconos Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         /* Animaciones suaves */
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+        .hidden-section { display: none; }
 
-        .hidden-section {
-            display: none;
+        /* --- ESTILOS DE IMPRESIÓN --- */
+        @media print {
+            /* Ocultar todo lo que no sea el área de impresión */
+            body > *:not(#print-area) {
+                display: none !important;
+            }
+            /* Mostrar y configurar el área de impresión */
+            #print-area {
+                display: block !important;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                background: white;
+                font-family: sans-serif;
+                color: black;
+            }
+            /* Ajustes para tablas en impresión */
+            table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 12pt; }
+            th { background-color: #f3f3f3 !important; -webkit-print-color-adjust: exact; }
+            /* Ocultar fondos de colores y sombras para ahorrar tinta */
+            * { box-shadow: none !important; text-shadow: none !important; }
         }
+        
+        /* El área de impresión está oculta en pantalla normal */
+        #print-area { display: none; }
     </style>
 </head>
 
 <body class="bg-gray-50 font-sans text-gray-800 min-h-screen p-4 md:p-8">
 
-    <div class="max-w-4xl mx-auto mb-4">
-    <a href="index.html" class="inline-flex items-center text-gray-500 hover:text-blue-600 font-medium transition-colors">
-        <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i>
-        Volver al Menú
-    </a>
-</div>
+    <div class="max-w-4xl mx-auto mb-4 print:hidden">
+        <a href="index.html" class="inline-flex items-center text-gray-500 hover:text-blue-600 font-medium transition-colors">
+            <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i>
+            Volver al Menú
+        </a>
+    </div>
 
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100 print:shadow-none print:border-0">
 
-    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
-
-        <!-- Header con Logo -->
-        <div class="bg-white p-6 border-b border-gray-100 text-center relative overflow-hidden">
+        <div class="bg-white p-6 border-b border-gray-100 text-center relative overflow-hidden print:hidden">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
-
             <div class="flex flex-col items-center justify-center gap-4">
-                <!-- LOGO: Cambia el src por tu imagen real si la tienes local o en internet -->
                 <div class="w-32">
-                    <img src="./img/logo.svg" alt="Logo CocoMar" class="w-full h-full object-cover">
+                    <img src="img/logo.svg" alt="Logo CocoMar" class="w-full h-full object-cover">
                 </div>
-
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800 tracking-tight">CocoMar</h1>
-                    <p class="text-blue-600 font-medium opacity-90 tracking-wide uppercase text-sm mt-1">Control de
-                        Producción & Barra</p>
+                    <p class="text-blue-600 font-medium opacity-90 tracking-wide uppercase text-sm mt-1">
+                        Control de Producción & Barra
+                    </p>
                 </div>
             </div>
         </div>
 
         <div class="p-6">
 
-            <!-- VISTA DE ENTRADA (INPUTS) -->
             <div id="input-section" class="fade-in">
-                <!-- Selector de Día -->
                 <div class="mb-8 text-center">
-                    <label class="block text-gray-400 text-xs font-bold uppercase tracking-widest mb-2">Selecciona el
-                        día</label>
+                    <label class="block text-gray-400 text-xs font-bold uppercase tracking-widest mb-2">Selecciona el día</label>
                     <div class="relative inline-block w-full max-w-xs group">
                         <select id="day-selector"
                             class="block appearance-none w-full bg-white border-2 border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded-xl leading-tight focus:outline-none focus:bg-white focus:border-blue-500 font-bold capitalize shadow-sm text-lg transition-all hover:border-blue-300">
@@ -83,25 +89,19 @@
                             <option value="sabado">Sábado</option>
                             <option value="domingo">Domingo</option>
                         </select>
-                        <div
-                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <i data-lucide="chevron-down" class="w-5 h-5 text-blue-500"></i>
                         </div>
                     </div>
                 </div>
 
-                <!-- Instrucciones -->
-                <div
-                    class="flex items-center gap-3 mb-6 bg-blue-50 p-4 rounded-xl border border-blue-100 text-blue-800 text-sm shadow-sm">
+                <div class="flex items-center gap-3 mb-6 bg-blue-50 p-4 rounded-xl border border-blue-100 text-blue-800 text-sm shadow-sm">
                     <i data-lucide="alert-circle" class="w-6 h-6 text-blue-600 flex-shrink-0"></i>
-                    <span><strong>Instrucciones:</strong> Revisa tu refrigerador y barra. Ingresa la cantidad que <u>YA
-                            TIENES LISTA</u>.</span>
+                    <span><strong>Instrucciones:</strong> Revisa tu refrigerador y barra. Ingresa la cantidad que <u>YA TIENES LISTA</u>.</span>
                 </div>
 
-                <!-- Grid de Inputs (Se genera con JS) -->
                 <div id="inventory-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                    <!-- Aquí se inyectan los campos -->
-                </div>
+                    </div>
 
                 <button onclick="calculateProduction()"
                     class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform transition hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-3 text-lg cursor-pointer">
@@ -110,39 +110,37 @@
                 </button>
             </div>
 
-            <!-- VISTA DE REPORTE (RESULTADOS) -->
             <div id="report-section" class="hidden-section fade-in space-y-8">
 
-                <!-- 1. Plan de Cocina -->
+                <div class="flex gap-4 mb-4">
+                    <button onclick="resetApp()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-3 px-4 rounded-xl transition flex items-center justify-center gap-2">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Modificar / Reiniciar
+                    </button>
+                    <button onclick="printReport()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                        <i data-lucide="printer" class="w-5 h-5"></i> Imprimir Reporte
+                    </button>
+                </div>
+
                 <div class="bg-white rounded-xl overflow-hidden border border-indigo-100 shadow-lg">
                     <div class="bg-indigo-600 p-4 flex justify-between items-center text-white">
                         <h2 class="text-xl font-bold flex items-center gap-2">
                             <i data-lucide="chef-hat" class="w-6 h-6"></i>
                             Plan de Cocina
                         </h2>
-                        <span id="report-day-badge"
-                            class="bg-white/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">DÍA</span>
+                        <span id="report-day-badge" class="bg-white/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">DÍA</span>
                     </div>
-
                     <div id="kitchen-plan-list" class="divide-y divide-gray-100">
-                        <!-- Aquí se inyecta la lista de qué cocinar -->
-                    </div>
-
-                    <!-- Mensaje si no hay nada que hacer -->
-                    <div id="empty-state"
-                        class="hidden-section p-12 text-center text-gray-500 flex flex-col items-center">
-                        <div
-                            class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-600">
-                            <i data-lucide="clipboard-list" class="w-8 h-8"></i>
+                        </div>
+                    <div id="empty-state" class="hidden-section p-12 text-center text-gray-500 flex flex-col items-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-600">
+                            <i data-lucide="check-circle" class="w-8 h-8"></i>
                         </div>
                         <h3 class="text-xl font-bold text-gray-700">¡Todo en orden!</h3>
                         <p class="text-gray-500 mt-2">No se requiere producción adicional por hoy.</p>
                     </div>
                 </div>
 
-                <!-- 2. Breakdown Jarabe -->
-                <div id="jarabe-section"
-                    class="hidden-section bg-amber-50 rounded-xl p-5 border border-amber-200 text-sm text-amber-900 shadow-sm relative overflow-hidden">
+                <div id="jarabe-section" class="hidden-section bg-amber-50 rounded-xl p-5 border border-amber-200 text-sm text-amber-900 shadow-sm relative overflow-hidden">
                     <div class="absolute top-0 right-0 p-4 opacity-10">
                         <i data-lucide="droplets" class="w-24 h-24 text-amber-900"></i>
                     </div>
@@ -152,23 +150,16 @@
                         </div>
                         <div class="w-full">
                             <h4 class="font-bold text-amber-800 text-lg">Resumen de Jarabe Natural</h4>
-                            <p class="mt-1 text-amber-800 opacity-80 max-w-lg">
-                                Total real necesario (Mezclas + Barra):
-                            </p>
-                            <div class="mt-4 grid grid-cols-3 gap-2 sm:gap-4">
-                                <div
-                                    class="bg-white px-4 py-3 rounded-lg border border-amber-100 shadow-sm text-center">
-                                    <span
-                                        class="block text-xs text-amber-400 font-bold uppercase tracking-wider mb-1">Total</span>
+                            <div class="mt-4 grid grid-cols-3 gap-2">
+                                <div class="bg-white px-4 py-3 rounded-lg border border-amber-100 shadow-sm text-center">
+                                    <span class="block text-xs text-amber-400 font-bold uppercase tracking-wider mb-1">Total</span>
                                     <span id="jarabe-total" class="text-2xl font-bold text-amber-700">0 L</span>
                                 </div>
-                                <div
-                                    class="bg-white/60 px-3 py-2 rounded-lg border border-amber-100 text-center flex flex-col justify-center">
+                                <div class="bg-white/60 px-3 py-2 rounded-lg border border-amber-100 text-center">
                                     <span class="block text-xs opacity-60 mb-1">Barra</span>
                                     <span id="jarabe-barra" class="font-bold text-amber-800">0 L</span>
                                 </div>
-                                <div
-                                    class="bg-white/60 px-3 py-2 rounded-lg border border-amber-100 text-center flex flex-col justify-center">
+                                <div class="bg-white/60 px-3 py-2 rounded-lg border border-amber-100 text-center">
                                     <span class="block text-xs opacity-60 mb-1">Mezclas</span>
                                     <span id="jarabe-mix" class="font-bold text-amber-800">0 L</span>
                                 </div>
@@ -177,43 +168,26 @@
                     </div>
                 </div>
 
-                <!-- 3. Lista de Compras Total -->
-                <div id="materials-section"
-                    class="hidden-section bg-white rounded-xl overflow-hidden border border-emerald-100 shadow-lg">
-                    <div class="bg-emerald-600 p-4 flex justify-between items-center text-white">
+                <div id="materials-section" class="hidden-section bg-white rounded-xl overflow-hidden border border-emerald-100 shadow-lg">
+                    <div class="bg-emerald-600 p-4 text-white">
                         <h2 class="text-xl font-bold flex items-center gap-2">
-                            <i data-lucide="clipboard-list" class="w-6 h-6"></i>
+                            <i data-lucide="shopping-cart" class="w-6 h-6"></i>
                             Lista de Almacén (Total)
                         </h2>
-                        <span
-                            class="bg-white/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Compras</span>
                     </div>
                     <div class="p-6">
-                        <p
-                            class="text-sm text-emerald-800 mb-4 bg-emerald-50 p-3 rounded-lg border border-emerald-100 inline-block">
-                            Suma total de ingredientes a retirar de bodega.
-                        </p>
                         <div id="materials-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <!-- Inyección JS -->
-                        </div>
+                            </div>
                     </div>
                 </div>
 
-                <button onclick="resetApp()"
-                    class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 font-bold py-4 px-6 rounded-xl transition flex items-center justify-center gap-2 mt-4 cursor-pointer">
-                    <i data-lucide="chevron-up" class="w-5 h-5"></i>
-                    Volver al inicio / Recalcular
-                </button>
             </div>
-
         </div>
     </div>
 
-    <div class="text-center mt-8 text-gray-400 text-xs uppercase tracking-widest">
-        <p>Sistema de Producción © Cocomar Bar 2025</p>
-    </div>
+    <div id="print-area">
+        </div>
 
-    <!-- LÓGICA DE LA APLICACIÓN -->
     <script>
         // --- DATOS ---
         const PAR_STOCK = {
@@ -239,7 +213,8 @@
             "Brochetas de frutos rojos": { yield: 1, ingredients: [{ name: "Frutos rojos mix", qty: 1, unit: "proporción pieza" }] }
         };
 
-        // --- FUNCIONES ---
+        // Variable global para guardar el plan actual y usarlo en la impresión
+        window.currentPlan = [];
 
         function init() {
             lucide.createIcons();
@@ -256,22 +231,17 @@
         function renderInputs() {
             const day = document.getElementById('day-selector').value;
             const container = document.getElementById('inventory-grid');
-            container.innerHTML = ''; // Limpiar
-
+            container.innerHTML = '';
             const items = PAR_STOCK[day];
-
             Object.keys(items).forEach(item => {
                 const target = items[item];
                 const unit = item.includes("Brocheta") ? "pz" : "Lt";
-
                 const div = document.createElement('div');
                 div.className = "flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl hover:shadow-md transition-shadow hover:border-blue-300 group";
                 div.innerHTML = `
                     <div class="flex-1">
                         <h3 class="font-bold text-gray-700 group-hover:text-blue-700 transition-colors">${item}</h3>
-                        <span class="text-xs text-gray-400 font-medium bg-gray-100 px-2 py-0.5 rounded-full inline-block mt-1">
-                            Meta: ${target} ${unit}
-                        </span>
+                        <span class="text-xs text-gray-400 font-medium bg-gray-100 px-2 py-0.5 rounded-full inline-block mt-1">Meta: ${target} ${unit}</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <input type="number" step="0.5" min="0" placeholder="0" data-item="${item}"
@@ -292,7 +262,6 @@
             let totalJarabeNeededForMixesLiters = 0;
             const materialsMap = {};
 
-            // 1. Calcular faltantes
             inputs.forEach(input => {
                 const item = input.dataset.item;
                 const current = parseFloat(input.value) || 0;
@@ -305,18 +274,12 @@
                         unit: item.includes("Brocheta") ? "pzas" : "Lt",
                         ingredientsNeeded: []
                     };
-
                     if (RECIPES[item]) {
                         const recipe = RECIPES[item];
                         const batchesNeeded = need / recipe.yield;
-
                         recipe.ingredients.forEach(ing => {
                             const totalQty = ing.qty * batchesNeeded;
-
-                            itemPlan.ingredientsNeeded.push({
-                                name: ing.name, qty: totalQty, unit: ing.unit
-                            });
-
+                            itemPlan.ingredientsNeeded.push({ name: ing.name, qty: totalQty, unit: ing.unit });
                             if (ing.name === "Jarabe natural") {
                                 let qtyInLiters = totalQty;
                                 if (ing.unit === "ml") qtyInLiters = totalQty / 1000;
@@ -331,7 +294,10 @@
                 }
             });
 
-            // 2. Lógica Jarabe
+            // Guardar plan en variable global
+            window.currentPlan = plan;
+
+            // Lógica Jarabe
             const jarabeDirecto = plan.find(p => p.item === "Jarabe natural");
             let totalJarabeLiters = totalJarabeNeededForMixesLiters;
             if (jarabeDirecto) totalJarabeLiters += jarabeDirecto.need;
@@ -345,12 +311,11 @@
                 });
             }
 
-            // Renderizar Resultados
+            // Renderizar
             document.getElementById('input-section').classList.add('hidden-section');
             document.getElementById('report-section').classList.remove('hidden-section');
             document.getElementById('report-day-badge').innerText = day.toUpperCase();
 
-            // Render Plan
             const planContainer = document.getElementById('kitchen-plan-list');
             planContainer.innerHTML = '';
             const emptyState = document.getElementById('empty-state');
@@ -379,7 +344,6 @@
                     } else {
                         ingredientsHtml = `<div class="ml-4 mt-2"><span class="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded">Sin sub-receta</span></div>`;
                     }
-
                     const div = document.createElement('div');
                     div.className = "p-5 hover:bg-gray-50 transition-colors";
                     div.innerHTML = `
@@ -396,7 +360,7 @@
                 });
             }
 
-            // Render Jarabe Info
+            // Jarabe e Ingredientes render
             const jarabeSection = document.getElementById('jarabe-section');
             if (totalJarabeLiters > 0) {
                 jarabeSection.classList.remove('hidden-section');
@@ -407,11 +371,9 @@
                 jarabeSection.classList.add('hidden-section');
             }
 
-            // Render Materials List
             const materialsContainer = document.getElementById('materials-list');
             materialsContainer.innerHTML = '';
             const matSection = document.getElementById('materials-section');
-
             const matKeys = Object.keys(materialsMap);
             if (matKeys.length > 0) {
                 matSection.classList.remove('hidden-section');
@@ -431,7 +393,6 @@
                 matSection.classList.add('hidden-section');
             }
 
-            // Refresh Icons
             lucide.createIcons();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -442,9 +403,71 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Iniciar
+        // --- FUNCIÓN DE IMPRESIÓN ---
+        function printReport() {
+            const day = document.getElementById('day-selector').value.toUpperCase();
+            const date = new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit' });
+            
+            // 1. Recopilar Inventario Inicial (Inputs)
+            let inventoryHtml = '<table class="w-full text-sm border-collapse mb-6"><thead><tr class="bg-gray-100"><th class="border p-2 text-left">Producto</th><th class="border p-2 text-right">Existencia Actual</th><th class="border p-2 text-right">Meta Par Stock</th></tr></thead><tbody>';
+            const inputs = document.querySelectorAll('.inventory-input');
+            const targets = PAR_STOCK[document.getElementById('day-selector').value];
+            inputs.forEach(input => {
+                const item = input.dataset.item;
+                const val = input.value || '0';
+                const target = targets[item];
+                const unit = item.includes("Brocheta") ? "pz" : "Lt";
+                inventoryHtml += `<tr><td class="border p-2 font-medium">${item}</td><td class="border p-2 text-right">${val} ${unit}</td><td class="border p-2 text-right text-gray-500">${target} ${unit}</td></tr>`;
+            });
+            inventoryHtml += '</tbody></table>';
+
+            // 2. Recopilar Plan de Producción
+            let productionHtml = '<table class="w-full text-sm border-collapse"><thead><tr class="bg-gray-100"><th class="border p-2 text-left">Producto a Producir</th><th class="border p-2 text-right">Cantidad Requerida</th></tr></thead><tbody>';
+            if (window.currentPlan && window.currentPlan.length > 0) {
+                window.currentPlan.forEach(row => {
+                     productionHtml += `<tr><td class="border p-2 font-bold text-lg">${row.item}</td><td class="border p-2 text-right font-bold text-lg">${formatNum(row.need)} ${row.unit}</td></tr>`;
+                });
+            } else {
+                productionHtml += '<tr><td colspan="2" class="border p-2 text-center text-gray-500 py-4 italic">No se requiere producción para hoy.</td></tr>';
+            }
+            productionHtml += '</tbody></table>';
+
+            // 3. Armar HTML Final para Impresión
+            const printContent = `
+                <div class="p-8 font-sans max-w-3xl mx-auto">
+                    <div class="flex justify-between items-center mb-8 border-b-2 border-gray-800 pb-4">
+                        <div class="w-24">
+                            <img src="img/logo.svg" alt="CocoMar" style="max-width:100%;">
+                        </div>
+                        <div class="text-right">
+                            <h1 class="text-2xl font-bold text-gray-900 uppercase tracking-tight">Reporte de Barra</h1>
+                            <p class="text-sm text-gray-500 mt-1">${date}</p>
+                            <p class="text-xs font-bold uppercase text-blue-600 mt-1">Día Operativo: ${day}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-lg font-bold mb-3 uppercase border-b border-gray-300 pb-1 text-gray-700">1. Inventario Inicial</h2>
+                        ${inventoryHtml}
+                    </div>
+                    
+                    <div>
+                        <h2 class="text-lg font-bold mb-3 uppercase border-b border-gray-300 pb-1 text-gray-700">2. Plan de Producción</h2>
+                        ${productionHtml}
+                    </div>
+                    
+                    <div class="mt-12 text-center text-xs text-gray-400 border-t pt-4">
+                        Documento generado automáticamente por Sistema CocoMar
+                    </div>
+                </div>
+            `;
+            
+            const printArea = document.getElementById('print-area');
+            printArea.innerHTML = printContent;
+            window.print();
+        }
+
         init();
     </script>
 </body>
-
 </html>
