@@ -33,12 +33,22 @@
                 background: white;
                 font-family: sans-serif;
                 color: black;
+                font-size: 12px; /* Letra un poco más pequeña para que quepa todo */
             }
+            
             /* Ajustes para tablas en impresión */
-            table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 12pt; }
-            th { background-color: #f3f3f3 !important; -webkit-print-color-adjust: exact; }
-            /* Ocultar fondos de colores y sombras para ahorrar tinta */
+            table { width: 100%; border-collapse: collapse; margin-bottom: 20px; page-break-inside: auto; }
+            tr { page-break-inside: avoid; page-break-after: auto; }
+            th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; }
+            th { background-color: #f0f0f0 !important; font-weight: bold; -webkit-print-color-adjust: exact; }
+            
+            /* Estilos específicos para la receta en impresión */
+            .recipe-row td { border-top: none; padding-top: 0; padding-bottom: 12px; }
+            .recipe-list { margin: 0; padding-left: 20px; list-style-type: disc; color: #444; }
+            .recipe-list li { margin-bottom: 2px; }
+            .item-header { background-color: #fafafa; font-weight: bold; font-size: 14px; }
+
+            /* Ocultar sombras */
             * { box-shadow: none !important; text-shadow: none !important; }
         }
         
@@ -403,7 +413,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // --- FUNCIÓN DE IMPRESIÓN ---
+        // --- FUNCIÓN DE IMPRESIÓN ACTUALIZADA ---
         function printReport() {
             const day = document.getElementById('day-selector').value.toUpperCase();
             const date = new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit' });
@@ -421,11 +431,28 @@
             });
             inventoryHtml += '</tbody></table>';
 
-            // 2. Recopilar Plan de Producción
+            // 2. Recopilar Plan de Producción CON RECETA
             let productionHtml = '<table class="w-full text-sm border-collapse"><thead><tr class="bg-gray-100"><th class="border p-2 text-left">Producto a Producir</th><th class="border p-2 text-right">Cantidad Requerida</th></tr></thead><tbody>';
+            
             if (window.currentPlan && window.currentPlan.length > 0) {
                 window.currentPlan.forEach(row => {
-                     productionHtml += `<tr><td class="border p-2 font-bold text-lg">${row.item}</td><td class="border p-2 text-right font-bold text-lg">${formatNum(row.need)} ${row.unit}</td></tr>`;
+                    // Fila Principal (Producto y Cantidad)
+                    productionHtml += `<tr class="item-header border-t border-gray-300"><td class="border-l border-r p-2">${row.item}</td><td class="border-r p-2 text-right">${formatNum(row.need)} ${row.unit}</td></tr>`;
+                    
+                    // Fila de Receta (Ingredientes)
+                    if (row.ingredientsNeeded && row.ingredientsNeeded.length > 0) {
+                        let ingredientsList = '<ul class="recipe-list">';
+                        row.ingredientsNeeded.forEach(ing => {
+                            ingredientsList += `<li>${ing.name}: <strong>${formatNum(ing.qty)} ${ing.unit}</strong></li>`;
+                        });
+                        ingredientsList += '</ul>';
+                        
+                        // Celda que abarca las 2 columnas para mostrar los ingredientes
+                        productionHtml += `<tr class="recipe-row"><td colspan="2" class="border-l border-r border-b p-2"><em>Ingredientes:</em>${ingredientsList}</td></tr>`;
+                    } else {
+                        // Cierre visual si no hay receta
+                         productionHtml += `<tr><td colspan="2" class="border-l border-r border-b p-0 h-1 bg-gray-50"></td></tr>`;
+                    }
                 });
             } else {
                 productionHtml += '<tr><td colspan="2" class="border p-2 text-center text-gray-500 py-4 italic">No se requiere producción para hoy.</td></tr>';
@@ -435,7 +462,7 @@
             // 3. Armar HTML Final para Impresión
             const printContent = `
                 <div class="p-8 font-sans max-w-3xl mx-auto">
-                    <div class="flex justify-between items-center mb-8 border-b-2 border-gray-800 pb-4">
+                    <div class="flex justify-between items-center mb-6 border-b-2 border-gray-800 pb-4">
                         <div class="w-24">
                             <img src="img/logo.svg" alt="CocoMar" style="max-width:100%;">
                         </div>
@@ -446,18 +473,18 @@
                         </div>
                     </div>
                     
-                    <div class="mb-8">
-                        <h2 class="text-lg font-bold mb-3 uppercase border-b border-gray-300 pb-1 text-gray-700">1. Inventario Inicial</h2>
+                    <div class="mb-6">
+                        <h2 class="text-lg font-bold mb-2 uppercase border-b border-gray-300 pb-1 text-gray-700">1. Inventario Inicial</h2>
                         ${inventoryHtml}
                     </div>
                     
                     <div>
-                        <h2 class="text-lg font-bold mb-3 uppercase border-b border-gray-300 pb-1 text-gray-700">2. Plan de Producción</h2>
+                        <h2 class="text-lg font-bold mb-2 uppercase border-b border-gray-300 pb-1 text-gray-700">2. Plan de Producción & Recetas</h2>
                         ${productionHtml}
                     </div>
                     
-                    <div class="mt-12 text-center text-xs text-gray-400 border-t pt-4">
-                        Documento generado automáticamente por Sistema CocoMar
+                    <div class="mt-8 text-center text-xs text-gray-400 border-t pt-2">
+                        Sistema CocoMar - Control Interno
                     </div>
                 </div>
             `;
