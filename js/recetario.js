@@ -388,12 +388,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     nombre: "Blue Hawaiian",
                     imagen: "img/blue-hawaiian.png",
                     ingredientes: [
-                        { nombre: "Ron Bacardi Blanco", cantidad: "1 1/2", umed: "OZ" },
-                        { nombre: "Crema de Coco", cantidad: "1 1/2", umed: "OZ" },
-                        { nombre: "Licor Curacao Azul", cantidad: "1 1/2", umed: "OZ" },
-                        { nombre: "Jugo de Piña", cantidad: "3", umed: "OZ" },
-                        { nombre: "Jugo de Limón", cantidad: "3/4", umed: "OZ" },
-                        { nombre: "Jarabe Natural", cantidad: "1 1/2", umed: "OZ" },
+                        { nombre: "Ron Bacardi Blanco", cantidad: "1", umed: "OZ" },
+                        { nombre: "Crema de Coco", cantidad: "1 ", umed: "OZ" },
+                        { nombre: "Licor Curacao Azul", cantidad: "1", umed: "OZ" },
+                        { nombre: "Jugo de Piña", cantidad: "2", umed: "OZ" },
+                        { nombre: "Jugo de Limón", cantidad: "1/2", umed: "OZ" },
+                        { nombre: "Jarabe Natural", cantidad: "1", umed: "OZ" },
                         { nombre: "Hielo", cantidad: "1", umed: "VASO" }
                     ],
                     preparacion: [
@@ -597,4 +597,5 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
 });
